@@ -1,0 +1,75 @@
+# Head over to https://app.swaggerhub.com/home
+# To create api definitions
+openapi: 3.0.0
+info:
+  title: Pipedrive Challenge Organisation API
+  description: Pipedrive challenge organisation relations API
+  version: "1.0.0"
+  contact:
+    email: campelo.nuno@gmail.com
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+paths:
+  /organisations:
+    post:
+      summary: Post organisation's relations
+      operationId: postOrganisationsRelations
+      description: Creates organisations together with the relations between them
+      responses:
+        '201':
+          description: Successfully created organisations and relations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisation'
+        '400':
+          description: Invalid request
+    get:
+      summary: Get organisation relations by name
+      operationId: getOrganisationRelations
+      description: Gets an organization's relations given its name
+      parameters:
+        - in: query
+          name: name
+          required: true
+          description: Organisation's name
+          schema:
+            type: string
+      responses:
+        '200':
+            description: Successfully fetched organisation relations
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/OrganisationRelations'
+
+components:
+  schemas:
+    Organisation:
+      type: object
+      required: 
+        - org_name
+      properties:
+        org_name:
+          type: string
+        daughters:
+          type: array
+          items:
+            type: object
+    OrganisationRelations:
+      type: array
+      items:
+        type: object
+        properties:
+          org_name:
+            type: string
+          relationship_type:
+            type: string      
+
+      
+servers:
+  - url: 'http://localhost:7000/api/v1'
+    description: Local dev server
+  - url: https://virtserver.swaggerhub.com/jsincubator/pipe-challenge/1.0.0
+    description: SwaggerHub testing server

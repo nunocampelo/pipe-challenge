@@ -1,0 +1,21 @@
+version: '3'
+
+networks:
+  pipe-challenge:
+    external: true
+
+services:
+  pipe-challenge:
+    container_name: pipe-challenge
+    image: node:11
+    volumes:
+      - .:/usr/src/service
+    networks:
+      - pipe-challenge
+    working_dir: /usr/src/service
+    command: npm start      
+    environment:
+      - NODE_ENV=development
+      - REDIS_HOST=redis
+    ports:
+      - 7000:7000
